@@ -58,5 +58,7 @@ public class Menu {
 
     private static void iniziaPartita(String nome){
         System.out.println("Inizia la partita per " + nome);
+        BlackBox blackBox = new BlackBox(8, 4);
+        blackBox.iniziaPartita(nome);
     }
 }

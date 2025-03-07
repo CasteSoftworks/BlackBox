@@ -2,7 +2,7 @@
 
 public class TestMisto {
     public static void main(String[] args) {
-        Griglia griglia = new Griglia();
+        Griglia griglia = new Griglia(8);
         griglia.posizionaAtomo(3, 3);
         griglia.posizionaAtomo(5, 5);
 
