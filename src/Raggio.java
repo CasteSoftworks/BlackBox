@@ -3,7 +3,7 @@ public class Raggio {
     private int colonna;
     private int deltaRiga;
     private int deltaColonna;
-    private Griglia griglia;
+    private final Griglia griglia;
 
     private int dove;
 
@@ -75,9 +75,9 @@ public class Raggio {
      * Devia il raggio in base alla direzione impostata
      * <ul>
      * <li>0: da sx a giu o viceversa</li>
-     * <li>1: da su a dx o viceversa</li>
+     * <li>1: da sx a su o viceversa</li>
      * <li>2: da dx a su o viceversa</li>
-     * <li>3: da giu a sx o viceversa</li>
+     * <li>3: da giu a dx o viceversa</li>
      * </ul>
      */
     private void deviaRaggio() {
