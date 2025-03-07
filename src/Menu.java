@@ -32,22 +32,18 @@ public class Menu {
 
     private static void eseguiScelta(int scelta){
         switch(scelta){
-            case 1:
+            case 1 -> {
                 String nome = leggiNome();
                 iniziaPartita(nome);
-                break;
-            case 2:
-                stampaPunteggi();
-                break;
-            case 3:
-                System.exit(0);
-                break;
+            }
+            case 2 -> System.out.println("Punteggi non disponibili");
+            case 3 -> System.exit(0);
         }
     }
 
-    private static void stampaPunteggi(){
+    /*private static void stampaPunteggi(){
 
-    }
+    }*/
 
     private static String leggiNome(){
         System.out.print("Inserisci il tuo nome: ");
