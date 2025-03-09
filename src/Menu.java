@@ -1,4 +1,7 @@
 public class Menu {
+    /**
+     * Stampa il titolo del gioco
+     */
     private static void stampaTitolo(){
         System.out.println(" ____    _               _     ____              ");
         System.out.println("|  _ \\  | |             | |   |  _ \\             ");
@@ -10,12 +13,21 @@ public class Menu {
 
     }
 
+    /**
+     * Stampa il menu principale
+     */
     private static void stampaMenu(){
         System.out.println("1. Inizia una nuova partita");
         System.out.println("2. Visualizza i punteggi");
         System.out.println("3. Esci");
     }
 
+    /**
+     * Legge la scelta dell'utente
+     * 
+     * @return la scelta dell'utente
+     * @throws NumberFormatException se l'utente non inserisce un numero valido
+     */
     private static int leggiScelta(){
         int scelta = 0;
         while(scelta < 1 || scelta > 3){
@@ -30,11 +42,15 @@ public class Menu {
         return scelta;
     }
 
+    /**
+     * Esegue la scelta dell'utente
+     * 
+     * @param scelta la scelta dell'utente
+     */
     private static void eseguiScelta(int scelta){
         switch(scelta){
             case 1 -> {
-                String nome = leggiNome();
-                iniziaPartita(nome);
+                iniziaPartita();
             }
             case 2 -> System.out.println("Punteggi non disponibili");
             case 3 -> System.exit(0);
@@ -45,20 +61,14 @@ public class Menu {
 
     }*/
 
-    private static String leggiNome(){
-        System.out.print("Inserisci il tuo nome: ");
-        return System.console().readLine();
-    }
-
     public static void main(String[] args) {
         stampaTitolo();
         stampaMenu();
         eseguiScelta(leggiScelta());
     }
 
-    private static void iniziaPartita(String nome){
-        System.out.println("Inizia la partita per " + nome);
+    private static void iniziaPartita(){
         BlackBox blackBox = new BlackBox(8, 4);
-        blackBox.iniziaPartita(nome);
+        blackBox.iniziaPartita();
     }
 }

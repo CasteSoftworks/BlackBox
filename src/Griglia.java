@@ -1,6 +1,14 @@
 public class Griglia {
+    /*
+     * AF:
+     * Una griglia G è una matrice di booleani di dimensione 8x8
+     * 
+     * IR:
+     * atomi non è null
+     * atomi ha dimensione 8x8
+     */
     private static final int DIM = 8;
-    private boolean[][] atomi;
+    private final boolean[][] atomi;
 
     /**
      * Costruisce una griglia vuota
@@ -37,6 +45,9 @@ public class Griglia {
         return atomi[x][y];
     }
 
+    /**
+     * Svuota la griglia
+     */
     public void svuotaGriglia() {
         for(int i = 0; i < DIM; i++) {
             for(int j = 0; j < DIM; j++) {
