@@ -3,7 +3,7 @@ public class BlackBox {
     private final Griglia grigliaGiocatore;
     private final int numeroAtomi;
     private int numeroMosse;
-    private int k=0;
+    public int t=0;
 
     public BlackBox(int dimensione, int numeroAtomi){
         this.grigliaVera = new Griglia(8);
@@ -17,7 +17,7 @@ public class BlackBox {
         }
     }
 
-    public void iniziaPartita(String nome){
+    public void iniziaPartita(){
         posizionaAtomi();
         numeroMosse = 0;
         gioca();
@@ -76,11 +76,11 @@ public class BlackBox {
         System.out.println("Da capo? (s/n)");
         if(System.console().readLine().equals("s")){
             grigliaGiocatore.svuotaGriglia();
-            k=0;
+            t=0;
         }
 
         int x, y;
-        for(; k < numeroAtomi; k++){
+        for(int k=t; k < numeroAtomi; k++){
             System.out.println("Inserisci la coordinata x dell'atomo " + (k+1) + ": ");
             x = Integer.parseInt(System.console().readLine());
             System.out.println("Inserisci la coordinata y dell'atomo " + (k+1) + ": ");
@@ -90,6 +90,7 @@ public class BlackBox {
 
             System.out.println("Vuoi posizionare un altro atomo? (s/n)");
             if(System.console().readLine().equals("n")){
+                t=k;
                 break;
             }
         }
