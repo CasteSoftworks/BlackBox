@@ -1,4 +1,13 @@
 public class Raggio {
+    /*
+     * AF:
+     * Un raggio è descritto da una riga e una colonna di partenza, una variazione di riga e una variazione di colonna e una griglia su cui si muove.
+     * 
+     * IR:
+     * riga e colonna sono comprese tra -1 e 8
+     * deltaRiga e deltaColonna sono 1 o -1
+     * griglia non è null
+     */
     private int riga;
     private int colonna;
     private int deltaRiga;
@@ -7,7 +16,34 @@ public class Raggio {
 
     private int dove;
 
-    public Raggio(int riga, int colonna, int deltaRiga, int deltaColonna, Griglia griglia) {
+    /**
+     * Costruttore di un raggio
+     * 
+     * @param riga la riga di partenza (-1 per partire dall'alto, 8 per partire dal basso)
+     * @param colonna la colonna di partenza (-1 per partire da sinistra, 8 per partire da destra)
+     * @param deltaRiga la variazione di riga (1 per andare dall'alto al basso, -1 per andare dal basso all'alto)
+     * @param deltaColonna la variazione di colonna (1 per andare da sinistra a destra, -1 per andare da destra a sinistra)
+     * @param griglia la griglia su cui si muove il raggio
+     * 
+     * @throws IllegalArgumentException se riga non è compresa tra -1 e 8, se colonna non è compresa tra -1 e 8, se deltaRiga non è 1 o -1, se deltaColonna non è 1 o -1
+     * @throws NullPointerException se griglia è null
+     */
+    public Raggio(int riga, int colonna, int deltaRiga, int deltaColonna, Griglia griglia) throws IllegalArgumentException, NullPointerException {
+        if(riga<-1||riga>8){
+            throw new IllegalArgumentException("La riga deve essere compresa tra -1 e 8");
+        }
+        if(colonna<-1||colonna>8){
+            throw new IllegalArgumentException("La colonna deve essere compresa tra -1 e 8");
+        }
+        if(deltaRiga!=1&&deltaRiga!=-1){
+            throw new IllegalArgumentException("La variazione di riga deve essere 1 o -1");
+        }
+        if(deltaColonna!=1&&deltaColonna!=-1){
+            throw new IllegalArgumentException("La variazione di colonna deve essere 1 o -1");
+        }
+        if(griglia==null){
+            throw new NullPointerException("La griglia non può essere null");
+        }
         this.riga = riga;
         this.colonna = colonna;
         this.deltaRiga = deltaRiga;
@@ -21,18 +57,16 @@ public class Raggio {
      * @return una stringa che descrive il percorso del raggio
      */
     public String calcolaPercorso() {
-        while (true) {
-            System.err.println("\tRaggio in (" + riga + ", " + colonna + ")");
-
-            // Controlla se il raggio rimbalza
-            if (controllaRimbalzo(riga, colonna)) {
-                System.err.println("\tRimbalzo");
-                return "Rimbalza in (" + riga + ", " + colonna + ")";
-            }
+        while (true) {           
             // Prima di muoversi, controlla se colpisce un atomo
             int prossimaRiga = riga + deltaRiga;
             int prossimaColonna = colonna + deltaColonna;
-            System.err.println("\tProssima posizione: (" + prossimaRiga + ", " + prossimaColonna + ")");
+
+            String r=controllaRimbalzo(prossimaRiga, prossimaColonna);
+            if(r!=null){
+                System.err.println("\tRimbalzo");
+                return r;
+            }
 
             // Controlla se il raggio viene assorbito subito
             if (controllaAssorbimento(prossimaRiga, prossimaColonna)) {
@@ -50,7 +84,7 @@ public class Raggio {
             colonna = prossimaColonna;
 
             // Se esce dalla griglia, restituisce il punto di uscita
-            if (riga < 0 || riga >= 8 || colonna < 0 || colonna >= 8) {
+            if (controllaUscita(riga, colonna)) {
                 return "Esce in (" + riga + ", " + colonna + ")";
             }
 
@@ -62,41 +96,30 @@ public class Raggio {
         }
     }
 
-    private boolean controllaRimbalzo(int riga, int colonna) {
-        /*
-         * ----|--   ----|--
-         * . o + . V . . + o
-         * . . . .   . . . .
-         */
-        if(griglia.presenteAtomo(0,colonna-1)||griglia.presenteAtomo(0,colonna+1)){
-            return true;
-        }
-        /*
-         * | o .   | . .
-         * --+ . V --+ .
-         * | . .   | o .
-         */
-        if(griglia.presenteAtomo(riga-1,0)||griglia.presenteAtomo(riga+1,0)){
-            return true;
-        }
-        /*
-         * . . . .   . . . .
-         * . o + . V . . + o
-         * ----|--   ----|--
-         */
-        if(griglia.presenteAtomo(7,colonna-1)||griglia.presenteAtomo(7,colonna+1)){
-            return true;
-        }
-        /*
-         * . o |   . . |
-         * . +-- V . +--
-         * . . |   . o |
-         */
-        if(griglia.presenteAtomo(riga-1,7)||griglia.presenteAtomo(riga+1,7)){
-            return true;
+    /**
+     * Controlla se il raggio esce dalla griglia
+     * 
+     * @param riga la riga
+     * @param colonna la colonna
+     * @return true se il raggio esce dalla griglia, false altrimenti
+     */
+    private boolean controllaUscita(int riga, int colonna) {
+        return riga < 0 || riga >= 8 || colonna < 0 || colonna >= 8;
+    }
+
+    /**
+     * Controlla se il raggio rimbalza
+     * 
+     * @param riga la riga
+     * @param colonna la colonna
+     * @return una stringa che descrive il rimbalzo del raggio (null se non rimbalza)
+     */
+    private String controllaRimbalzo(int riga, int colonna) {
+        if((riga==0||riga==7||colonna==0||colonna==7)&&(griglia.presenteAtomo(riga, colonna+1)||griglia.presenteAtomo(riga, colonna-1)||griglia.presenteAtomo(riga+1, colonna)||griglia.presenteAtomo(riga-1, colonna))){
+            return "Rimbalza in (" + riga + ", " + colonna + ")";
         }
 
-        return false;
+        return null;
     }
 
     /**
